@@ -1,0 +1,34 @@
+global proc dpScriptsInit()
+{
+	hotkey -k "q" -alt -name "dpIsolateSelectionToggleCommand";
+}
+
+proc setupNamedCommands() {
+	nameCommand -annotation "Isolate Selection Toggle" -command "dpIsolateSelectionToggle()" dpIsolateSelectionToggleCommand;	
+}
+
+/// ISOLATE SELECTION TOGGLE ///
+global proc dpIsolateSelectionToggle()
+{
+	string $currPanel = `getPanel -withFocus`;
+	if ("" != $currPanel && ("modelPanel" == `getPanel -to $currPanel`))
+	{
+		int $isolate_onoff = `isolateSelect -q -state $currPanel`;
+		switch ($isolate_onoff)
+		{
+			case 0: 
+				enableIsolateSelect $currPanel 1;
+				isolateSelect -state 1 $currPanel;
+				break;
+			case 1: 
+				enableIsolateSelect $currPanel 0;
+				isolateSelect -state 0 $currPanel;
+				break;
+			default: break;
+		}
+		$isolate_onoff = `isolateSelect -q -state $currPanel`;
+		print("IsolateView: " + $isolate_onoff + "\n");
+	} else {
+		error "No modeling panel selected or invalid.";
+	}
+}
