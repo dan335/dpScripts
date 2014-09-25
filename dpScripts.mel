@@ -1,8 +1,3 @@
-global proc dpScriptsInit()
-{
-
-}
-
 proc setupNamedCommands() {
 	nameCommand -annotation "Isolate Selection Toggle" -command "dpIsolateSelectionToggle()" dpIsolateSelectionToggleCommand;
 	nameCommand -annotation "Old Split Polygon Tool" -command "SplitPolygonTool" SplitPolygonToolCommand;
@@ -12,6 +7,7 @@ proc setupHotkeys() {
 	hotkey -k "q" -alt -name "dpIsolateSelectionToggleCommand";
 	hotkey -k "s" -alt -name "SplitPolygonToolCommand";
 }
+
 
 /// ISOLATE SELECTION TOGGLE ///
 global proc dpIsolateSelectionToggle()
@@ -37,4 +33,42 @@ global proc dpIsolateSelectionToggle()
 	} else {
 		error "No modeling panel selected or invalid.";
 	}
+}
+
+
+global proc dpScriptsInit()
+{
+	print "loading dpScripts";
+
+	// To show file extensions in filter settings
+	optionVar -iv FileDialogHideExtension false;
+
+	// Increase undo queue size
+	// Window > Settings/Preferences > Preferences > Settings > Undo
+	undoInfo -length 200;
+
+	// hotBox transparency to 0%
+	// Menu: Right quarter in hotbox: Hotbox controls > Set transparency
+	hotBox -tr 0;
+
+	// Disable the interactive Polygon / NURBS creation. 
+	// Menu: Create / NURBS Primitives / Interactive Creation
+	optionVar -intValue createNurbsPrimitiveAsTool 0;// nurbs 
+	menuItem -e -cb 0 toggleCreateNurbsPrimitivesAsToolItem; // nurbs 
+	optionVar -intValue createPolyPrimitiveAsTool 0;// poly 
+	menuItem -e -cb 0 toggleCreatePolyPrimitivesAsToolItem;// poly 
+
+	// Remove viewcube   
+	viewManip -visible off; optionVar -iv viewCubeShowCube 0;
+
+	// More precise channel box display 
+	global string $gChannelBoxName; 
+	channelBox -e -precision 4 $gChannelBoxName;
+
+	// Heads-up display 
+	// Display > Heads Up Display > Poly Count 
+	setPolyCountVisibility 1; 
+
+	setupNamedCommands();
+	hotkey -k "q" -alt -name "dpIsolateSelectionToggleCommand";
 }
