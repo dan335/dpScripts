@@ -1,10 +1,16 @@
 global proc dpScriptsInit()
 {
-	hotkey -k "q" -alt -name "dpIsolateSelectionToggleCommand";
+
 }
 
 proc setupNamedCommands() {
-	nameCommand -annotation "Isolate Selection Toggle" -command "dpIsolateSelectionToggle()" dpIsolateSelectionToggleCommand;	
+	nameCommand -annotation "Isolate Selection Toggle" -command "dpIsolateSelectionToggle()" dpIsolateSelectionToggleCommand;
+	nameCommand -annotation "Old Split Polygon Tool" -command "SplitPolygonTool" SplitPolygonToolCommand;
+}
+
+proc setupHotkeys() {
+	hotkey -k "q" -alt -name "dpIsolateSelectionToggleCommand";
+	hotkey -k "s" -alt -name "SplitPolygonToolCommand";
 }
 
 /// ISOLATE SELECTION TOGGLE ///
